@@ -1,5 +1,9 @@
 ﻿using Contracts;
 using LoggerService;
+using CompanyEmployees;
+using Repository;
+using Service;
+using Service.Contracts;
 
 namespace CompanyEmployees;
 
@@ -19,6 +23,12 @@ public static class ServiceExtensions
         services.AddSingleton<ILoggerManager, LoggerManager>();
 
     public static void ConfigureRepositories(this IServiceCollection services)
-        => services.AddScoped<IRepositoryManager, IRepositoryManager>(); 
-    
+        => services.AddScoped<IRepositoryManager, RepositoryManager>();
+
+    public static void ConfigureServices(this IServiceCollection services)
+        => services.AddScoped<IServiceManager, ServiceManager>();
+
+
+    public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration) =>
+        services.AddSqlServer<RepositoryContext>(configuration.GetConnectionString("sqlConnection"));
 }

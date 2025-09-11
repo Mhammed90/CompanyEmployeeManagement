@@ -9,9 +9,11 @@ builder.Services.ConfigureLoggerService();
 
 LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
 builder.Services.AddOpenApi();
-builder.Services.ConfigureCors(); 
+builder.Services.ConfigureCors();
 builder.Services.ConfigureRepositories();
-builder.Services.AddControllers();  
+builder.Services.ConfigureServices();
+builder.Services.ConfigureSqlContext(builder.Configuration);
+builder.Services.AddControllers();
 builder.Services.ConfigureIisIntegration();
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
@@ -38,4 +40,3 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
-

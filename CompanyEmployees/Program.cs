@@ -1,6 +1,7 @@
 using CompanyEmployees;
 using Microsoft.AspNetCore.HttpOverrides;
 using NLog;
+using CompanyEmployees.Presentation;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -11,10 +12,13 @@ LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nl
 builder.Services.AddOpenApi();
 builder.Services.ConfigureCors();
 builder.Services.ConfigureRepositories();
+builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddControllers()
+    .AddApplicationPart(typeof(CompanyEmployees.Presentation.AssemblyReference).Assembly);
+builder.Services.ConfigureIisIntegration();
 builder.Services.ConfigureServices();
 builder.Services.ConfigureSqlContext(builder.Configuration);
-builder.Services.AddControllers();
-builder.Services.ConfigureIisIntegration();
+
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 
